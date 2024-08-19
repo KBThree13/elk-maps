@@ -1,0 +1,234 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
+/* Variables for easier theming and maintenance */
+:root {
+    --primary-color: #4a90e2; /* Bright blue */
+    --primary-color-dark: #357ab8; /* Darker blue for hover */
+    --secondary-color: #f5a623; /* Vibrant orange */
+    --accent-color: #50e3c2; /* Teal accent */
+    --accent-color-dark: #39b79a; /* Darker teal for hover */
+    --highlight-color: #9013fe; /* Purple highlight */
+    --background-color: #f4f7f6; /* Light background */
+    --content-background: white;
+    --border-color: #d1d1d1; /* Light gray for borders */
+    --text-color: #333;
+    --danger-color: #d0021b; /* Bright red for danger */
+    --padding: 1rem;
+    --margin: 1rem;
+    --max-width: 960px;
+    --font-family-sans: 'Montserrat', sans-serif;
+    --font-family-serif: 'Montserrat', serif;
+}
+
+/* Base styles */
+html {
+    font-family: var(--font-family-sans);
+    background: var(--background-color);
+    padding: var(--padding);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+body {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    background: var(--content-background);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: var(--padding);
+}
+
+/* Heading styles */
+h1 {
+    font-family: var(--font-family-serif);
+    color: var(--primary-color);
+    margin: var(--margin) 0;
+}
+
+/* Link styles */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-color-dark);
+}
+
+/* Horizontal rule styles */
+hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: var(--margin) 0;
+}
+
+/* Navigation styles */
+nav {
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav h1 {
+    flex: auto;
+    margin: 0;
+    color: white;
+}
+
+nav h1 a {
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    color: white;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a, nav ul li span, header .action {
+    display: block;
+    padding: 0.5rem;
+    transition: background 0.3s ease;
+    color: var(--primary-color);
+}
+
+nav ul li a:hover, nav ul li span:hover, header .action:hover {
+    background: var(--accent-color);
+}
+
+/* Content styles */
+.content {
+    padding: var(--padding);
+    margin-bottom: var(--margin);
+}
+
+.content > header {
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: var(--padding);
+}
+
+.content > header h1 {
+    flex: auto;
+    margin: 0;
+}
+
+/* Flash message styles */
+.flash {
+    margin: var(--margin) 0;
+    padding: var(--padding);
+    background: var(--highlight-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    color: white;
+}
+
+/* Post styles */
+.post > header {
+    display: flex;
+    align-items: flex-end;
+    font-size: 0.85em;
+}
+
+.post > header > div:first-of-type {
+    flex: auto;
+}
+
+.post > header h1 {
+    font-size: 1.5em;
+    margin-bottom: 0;
+}
+
+.post .about {
+    color: var(--highlight-color);
+    font-style: italic;
+}
+
+.post .body {
+    white-space: pre-line;
+}
+
+/* Form styles */
+.content form {
+    margin: var(--margin) 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.content label {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    color: var(--primary-color);
+}
+
+.content input, .content textarea {
+    margin-bottom: 1em;
+    padding: 0.5em;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.content input:focus, .content textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.content textarea {
+    min-height: 12em;
+    resize: vertical;
+}
+
+input.danger {
+    color: var(--danger-color);
+}
+
+input[type=submit] {
+    align-self: start;
+    min-width: 10em;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+input[type=submit]:hover {
+    background: var(--primary-color-dark);
+}
+
+button.accent {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button.accent:hover {
+    background: var(--accent-color-dark);
+}
+
+/* Utility classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: var(--margin);
+}
+
+.mb-1 {
+    margin-bottom: var(--margin);
+}

@@ -1,0 +1,39 @@
+# Python specific files
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+*.pyo
+*.pyd
+
+# Virtual environment folders
+env/
+venv/
+.venv/
+pip-selfcheck.json
+
+# Gitpod specific
+.gitpod/
+
+# Flask specific
+instance/
+*.db
+*.sqlite3
+
+# IDE/editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and other output
+*.log
+*.pot
+*.mo
+
+# Byte-compiled files
+*.pyc
+
+# OS-specific files
+.DS_Store
+Thumbs.db
