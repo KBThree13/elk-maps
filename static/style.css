@@ -232,3 +232,9 @@ button.accent:hover {
 .mb-1 {
     margin-bottom: var(--margin);
 }
+
+/* Set the height of the map to fill the viewport */
+#map {
+    height: 100vh;
+    width: 100%;
+}
