@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Property</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        label, input, textarea {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Add Property Details</h3>
+    <form id="property-form">
+        <label for="property-name">Property Name:</label>
+        <input type="text" id="property-name" name="property-name" required>
+        
+        <label for="property-description">Description:</label>
+        <textarea id="property-description" name="property-description"></textarea>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // Get the latitude and longitude from the query parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var latitude = urlParams.get('lat');
+        var longitude = urlParams.get('lng');
+
+        // Handle form submission
+        document.getElementById('property-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get the form data
+            var name = document.getElementById('property-name').value;
+            var description = document.getElementById('property-description').value;
+
+            // Send the data back to the parent window
+            window.opener.postMessage({
+                name: name,
+                description: description,
+                latitude: latitude,
+                longitude: longitude
+            }, window.location.origin);
+
+            // Close the popup window
+            window.close();
+        });
+    </script>
+</body>
+</html>
