@@ -19,8 +19,9 @@ CREATE TABLE post (
 
 CREATE TABLE properties (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    description TEXT,
+    user_id INTEGER REFERENCES user(id),
+    owner TEXT NOT NULL,
+    address TEXT,
     latitude REAL NOT NULL,
     longitude REAL NOT NULL
 );

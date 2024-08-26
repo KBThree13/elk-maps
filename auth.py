@@ -1,7 +1,7 @@
 import functools
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
 )
 
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -89,3 +89,10 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+@bp.route('/is_authenticated')
+def is_authenticated():
+    if g.user is None:
+        return jsonify({'authenticated': False})
+    else:
+        return jsonify({'authenticated': True})

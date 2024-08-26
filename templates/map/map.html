@@ -13,42 +13,14 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
-    <style>
-        /* Modal styling */
-        #modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
 
-        #modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            width: 300px;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        label, input, textarea, button {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-        }
-
-        #modal-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-    </style>
 </head>
 <body>
-    <h1>Elk Lake Properties and Trials</h1>
+    <div id="header">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Map Logo">
+        <h1>Elk Lake Properties and Trails</h1>
+    </div>
+
     <div id="map"></div>
 
     <!-- Custom Modal -->
@@ -56,87 +28,42 @@
         <div id="modal-content">
             <h3>Add Property Details</h3>
             <form id="modal-form">
-                <label for="property-name">Property Name:</label>
-                <input type="text" id="property-name" name="property-name" required>
+                <label for="property-owner">Owner:</label>
+                <input type="text" id="property-owner" name="property-owner" required>
 
-                <label for="property-description">Description:</label>
-                <textarea id="property-description" name="property-description"></textarea>
+                <label for="property-address">Address:</label>
+                <textarea id="property-address" name="property-address"></textarea>
 
                 <div id="modal-buttons">
-                    <button type="button" id="confirm-btn">Confirm</button>
-                    <button type="button" id="cancel-btn">Cancel</button>
+                    <button id="confirm-btn" class="pill-button confirm">Confirm</button>
+                    <button id="cancel-btn" class="pill-button cancel">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Edit Property Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h2>Edit Property</h2>
+            <form id="edit-property-form">
+                <input type="hidden" id="edit-property-id" name="property-id">
+                <div>
+                    <label for="edit-property-owner">Owner:</label>
+                    <input type="text" id="edit-property-owner" name="property-owner" required>
+                </div>
+                <div>
+                    <label for="edit-property-address">Address:</label>
+                    <textarea id="edit-property-address" name="property-address" required></textarea>
+                </div>
+                <button id="confirm-save" class="pill-button confirm">Save Changes</button>
+                <button id="cancel-save" class="pill-button cancel">Cancel Edit</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Leaflet JS -->
-    <script>
-        // Initialize the map
-        var map = L.map('map').setView([38.489272909796775, -84.75804556192263], 15);  // Set to your community's location
-
-        // Load OpenStreetMap tiles
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-
-        var clickedLatLng = null;
-
-        // Load existing properties from the server
-        fetch('/get_properties')
-            .then(response => response.json())
-            .then(properties => {
-                properties.forEach(property => {
-                    L.marker([property[2], property[3]]).addTo(map)
-                        .bindPopup('<b>' + property[0] + '</b><br>' + (property[1] || 'No description provided.'));
-                });
-            });
-
-        // Handle map clicks
-        map.on('click', function(e) {
-            clickedLatLng = e.latlng;
-            document.getElementById('modal').style.display = 'block';
-        });
-
-        // Handle confirm button click
-        document.getElementById('confirm-btn').addEventListener('click', function() {
-            var name = document.getElementById('property-name').value;
-            var description = document.getElementById('property-description').value;
-
-            if (name && clickedLatLng) {
-                // Add marker to the map
-                L.marker([clickedLatLng.lat, clickedLatLng.lng]).addTo(map)
-                    .bindPopup('<b>' + name + '</b><br>' + (description || 'No description provided.'))
-                    .openPopup();
-
-                // Save the property to the database
-                fetch('/add_property', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: name,
-                        description: description,
-                        latitude: clickedLatLng.lat,
-                        longitude: clickedLatLng.lng
-                    })
-                });
-
-                // Hide the modal and reset inputs
-                document.getElementById('modal').style.display = 'none';
-                document.getElementById('modal-form').reset();
-                clickedLatLng = null;
-            }
-        });
-
-        // Handle cancel button click
-        document.getElementById('cancel-btn').addEventListener('click', function() {
-            document.getElementById('modal').style.display = 'none';
-            document.getElementById('modal-form').reset();
-            clickedLatLng = null;
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+        
 </body>
 </html>
