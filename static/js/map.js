@@ -128,7 +128,7 @@ function showEditModal(id, owner, address) {
         const updatedName = document.getElementById('edit-property-owner').value;
         const updatedDescription = document.getElementById('edit-property-address').value;
 
-        fetch(`/update_property/${id}`, {
+        fetch(`/edit_property/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

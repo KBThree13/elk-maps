@@ -55,22 +55,34 @@ def edit_property(property_id):
         'SELECT * FROM properties WHERE id = ? AND user_id = ?', (property_id, g.user['id'])
     ).fetchone()
 
+    # Redirect if the property is not found or the user is not the owner
     if property is None:
-        return redirect(url_for('index'))  # Redirect if property is not found or the user is not the owner
+        return jsonify({'success': False, 'error': 'Property not found or access denied'}), 404
 
     if request.method == 'POST':
-        owner = request.form['owner']
-        address = request.form['address']
-        latitude = request.form['latitude']
-        longitude = request.form['longitude']
+        try:
+            # Extract JSON data from the request
+            data = request.json
+            owner = data.get('owner')
+            address = data.get('address')
 
-        db.execute(
-            'UPDATE properties SET owner = ?, address = ?, latitude = ?, longitude = ? WHERE id = ? AND user_id = ?',
-            (owner, address, latitude, longitude, property_id, g.user['id'])
-        )
-        db.commit()
-        return redirect(url_for('map'))
+            if not owner or not address:
+                return jsonify({'success': False, 'error': 'Owner and address fields are required'}), 400
 
+            # Update the property in the database
+            db.execute(
+                'UPDATE properties SET owner = ?, address = ? WHERE id = ? AND user_id = ?',
+                (owner, address, property_id, g.user['id'])
+            )
+            db.commit()
+
+            return jsonify({'success': True})
+
+        except Exception as e:
+            # Catch any exceptions and return an error message
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    # If the request is not POST, render the map template
     return render_template('map/map.html', property=property)
 
 @bp.route('/delete_property/<int:property_id>', methods=['POST'])
