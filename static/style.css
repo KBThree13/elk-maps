@@ -3,12 +3,12 @@
 
 /* Variables for easier theming and maintenance */
 :root {
-    --primary-color: #4a90e2; /* Bright blue */
+    --primary-color: #0c3869; /* Bright blue */
     --primary-color-dark: #357ab8; /* Darker blue for hover */
-    --secondary-color: #f5a623; /* Vibrant orange */
+    --secondary-color: #3f964b; /* Vibrant orange */
     --accent-color: #50e3c2; /* Teal accent */
     --accent-color-dark: #39b79a; /* Darker teal for hover */
-    --highlight-color: #9013fe; /* Purple highlight */
+    --highlight-color: #48ec28; /* Purple highlight */
     --background-color: #f4f7f6; /* Light background */
     --content-background: white;
     --border-color: #d1d1d1; /* Light gray for borders */
@@ -287,6 +287,8 @@ label, input, textarea, button {
     border-radius: 50px;
     font-size: 16px;
     cursor: pointer;
+    width: 150px;
+    margin: 20px auto;
     transition: background-color 0.3s ease;
 }
 

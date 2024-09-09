@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+
+{% block header %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,9 @@
     crossorigin=""></script>
 
 </head>
+{% endblock %}
+
+{% block content %}
 <body>
     <div id="header">
         <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Map Logo">
@@ -66,4 +70,4 @@
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
         
 </body>
-</html>
+{% endblock %}

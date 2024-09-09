@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elk Lake Community Map</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/welcome.css') }}">
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>Elk Lake Community Map</h1>
+        <div class="button-container">
+            <a href="{{ url_for('auth.register') }}" class="welcome-button">Login</a>
+            <a href="{{ url_for('maps') }}" class="welcome-button">View Map</a>
+        </div>
+    </div>
+</body>
+</html>

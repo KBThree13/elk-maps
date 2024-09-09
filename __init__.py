@@ -20,9 +20,9 @@ def create_app(test_config=None):
     def maps():
         return render_template("map/map.html")
 
-    @app.route('/property-form.html')
-    def property_form():
-        return render_template('map/property-form.html')
+    @app.route('/')
+    def welcome():
+        return render_template("welcome.html")
     
     #register the DB
     from . import db
@@ -35,7 +35,7 @@ def create_app(test_config=None):
     #register the blog blueprint
     from . import blog
     app.register_blueprint(blog.bp)
-    app.add_url_rule('/', endpoint='index')
+    app.add_url_rule('/index', endpoint='index')
 
     #register the property blueprint
     from . import property

@@ -99,63 +99,70 @@ document.getElementById('confirm-btn').addEventListener('click', function() {
     }
 });
 
-// Handle cancel button click
+
+// Example function for adding a marker with edit and delete buttons
 document.getElementById('cancel-btn').addEventListener('click', function() {
-    document.getElementById('modal').style.display = 'none';
+    document.getElementById('editModal').style.display = 'none';
     document.getElementById('modal-form').reset();
-    clickedLatLng = null;
 });
+
 // Example function for adding a marker with edit and delete buttons
 function addMarker(property) {
     const marker = L.marker([property.latitude, property.longitude]).addTo(map)
         .bindPopup(`
             <b>${property.owner}</b><br>${property.address || 'No description provided.'}
             ${property.is_owner ? `
-                <br><button class="pill-button edit" onclick="showEditModal(${property.id}, '${property.owner}', '${property.address}')">Edit</button>
+                <br><button class="pill-button edit" onclick="showEditModal(${property.id}, '${property.owner}', '${property.address}', this)">Edit</button>
                 <button class="pill-button delete" onclick="deleteProperty(${property.id})">Delete</button>
             ` : ''}
         `).openPopup();
+
+    marker.propertyId = property.id; // Store the property ID in the marker object
 }
 
 // Show the edit modal with the current property data
-function showEditModal(id, owner, address) {
+function showEditModal(id, owner, address, button) {
     document.getElementById('edit-property-owner').value = owner;
     document.getElementById('edit-property-address').value = address;
     document.getElementById('editModal').style.display = 'block';
 
-    // Save the updated data on confirmation
-    document.getElementById('confirm-save').onclick = function () {
-        const updatedName = document.getElementById('edit-property-owner').value;
-        const updatedDescription = document.getElementById('edit-property-address').value;
-
-        fetch(`/edit_property/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                owner: updatedName,
-                address: updatedDescription
-            })
-        }).then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  // Refresh the map or update the marker with new details
-                  marker.setPopupContent(`
-                      <b>${updatedName}</b><br>${updatedDescription || 'No description provided.'}
-                      <br><button class="pill-button edit" onclick="showEditModal(${id}, '${updatedName}', '${updatedDescription}')">Edit</button>
-                      <button class="pill-button delete" onclick="deleteProperty(${id})">Delete</button>
-                  `);
-                  document.getElementById('editModal').style.display = 'none';
-              }
-          });
-    };
-
-    // Hide the modal if the user cancels
-    document.getElementById('cancel-edit').onclick = function () {
-        document.getElementById('editModal').style.display = 'none';
-    };
+    // Store the associated marker for updating after save
+    document.getElementById('confirm-save').marker = L.marker([0, 0], {}); // Placeholder marker object
+    map.eachLayer(function (layer) {
+        if (layer.propertyId === id) {
+            document.getElementById('confirm-save').marker = layer;
+        }
+    });
 }
+
+// Save the updated data on confirmation
+document.getElementById('confirm-save').addEventListener('click', function () {
+    const updatedName = document.getElementById('edit-property-owner').value;
+    const updatedDescription = document.getElementById('edit-property-address').value;
+    const marker = this.marker;
+
+    fetch(`/edit_property/${marker.propertyId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            owner: updatedName,
+            address: updatedDescription
+        })
+    }).then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Refresh the map or update the marker with new details
+            marker.setPopupContent(`
+                <b>${updatedName}</b><br>${updatedDescription || 'No description provided.'}
+                <br><button class="pill-button edit" onclick="showEditModal(${marker.propertyId}, '${updatedName}', '${updatedDescription}', this)">Edit</button>
+                <button class="pill-button delete" onclick="deleteProperty(${marker.propertyId})">Delete</button>
+            `);
+            document.getElementById('editModal').style.display = 'none';
+        }
+    });
+});
 
 // Function to handle delete
 function deleteProperty(id) {
